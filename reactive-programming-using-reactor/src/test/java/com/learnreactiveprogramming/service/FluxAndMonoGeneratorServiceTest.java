@@ -22,4 +22,12 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNextCount(2) //because one event is already consumed, now we are left with 2
                 .verifyComplete();
     }
+
+    @Test
+    void otherNamesFlux() {
+        var namesFlux = service.otherNamesFlux();
+        StepVerifier.create(namesFlux)
+                .expectNext("ALEX", "CHLOE")
+                .verifyComplete();
+    }
 }

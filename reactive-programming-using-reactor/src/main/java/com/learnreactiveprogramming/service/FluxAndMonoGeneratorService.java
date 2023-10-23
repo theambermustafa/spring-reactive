@@ -24,6 +24,9 @@ public class FluxAndMonoGeneratorService {
 //        generatorService.namesMono().subscribe(System.out::println);
         generatorService.namesMono().subscribe(x -> System.out.println("The name is: " + x));
 
+
+        //useful operations on top of the data from Flux::
+        generatorService.otherNamesFlux().subscribe(name -> System.out.println("Transformed name is: " + name));
     }
 
     public Flux<String> namesFlux() {
@@ -33,5 +36,12 @@ public class FluxAndMonoGeneratorService {
 
     public Mono<String> namesMono() {
         return Mono.just("Amber").log();
+    }
+
+    public Flux<String> otherNamesFlux() {
+        return Flux.fromIterable(List.of("Alex", "Ben", "Chloe"))
+                .filter(name -> name.length() > 3)
+                .map(String::toUpperCase)
+                .log();
     }
 }
