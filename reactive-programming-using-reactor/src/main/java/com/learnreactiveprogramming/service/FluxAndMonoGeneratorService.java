@@ -30,6 +30,15 @@ public class FluxAndMonoGeneratorService {
 
         //to show that flux instance is immutable (reactive streams are immutable)
         generatorService.namesFluxImmutability().subscribe(name -> System.out.println("Value changed? " + name));
+
+        //filter example
+        generatorService.requiredNames().subscribe(x -> {
+            System.out.println("Required name: " + x);
+        });
+    }
+
+    private static boolean isLengthFine(String str) {
+        return str.length() > 5;
     }
 
     public Flux<String> namesFlux() {
@@ -52,5 +61,11 @@ public class FluxAndMonoGeneratorService {
         var names = Flux.fromIterable(List.of("Alex", "Ben", "Chloe"));
         names.map(String::toUpperCase);
         return names;
+    }
+
+    public Flux<String> requiredNames() {
+        return Flux.fromIterable(List.of("Amber", "Mustafa", "Hesoyam", "Chloe", "La Martiniere", "Alex"))
+                .filter(FluxAndMonoGeneratorService::isLengthFine)
+                .log();
     }
 }
