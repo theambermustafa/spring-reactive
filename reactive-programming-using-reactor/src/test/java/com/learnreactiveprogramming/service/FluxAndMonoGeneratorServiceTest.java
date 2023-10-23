@@ -15,7 +15,7 @@ class FluxAndMonoGeneratorServiceTest {
         var namesFlux = service.namesFlux();
 
         //then
-        StepVerifier.create(namesFlux)
+        StepVerifier.create(namesFlux) //create automatically invokes the Publisher to send events
 //                .expectNextCount(3)
 //                .expectNext("Alex", "Ben", "Chloe")
                 .expectNext("Alex")
