@@ -28,7 +28,7 @@ public class FluxAndMonoGeneratorService {
 
     public Flux<String> namesFlux() {
         return Flux.fromIterable(List.of("Alex", "Ben", "Chloe"))
-                .log(); //comes either from a remote service or db eventually
+                .log(); //comes either from a remote service or db eventually (every element of the list comes as an event)
     }
 
     public Mono<String> namesMono() {
