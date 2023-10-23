@@ -27,6 +27,9 @@ public class FluxAndMonoGeneratorService {
 
         //useful operations on top of the data from Flux::
         generatorService.otherNamesFlux().subscribe(name -> System.out.println("Transformed name is: " + name));
+
+        //to show that flux instance is immutable (reactive streams are immutable)
+        generatorService.namesFluxImmutability().subscribe(name -> System.out.println("Value changed? " + name));
     }
 
     public Flux<String> namesFlux() {
@@ -43,5 +46,11 @@ public class FluxAndMonoGeneratorService {
                 .filter(name -> name.length() > 3)
                 .map(String::toUpperCase)
                 .log();
+    }
+
+    public Flux<String> namesFluxImmutability() {
+        var names = Flux.fromIterable(List.of("Alex", "Ben", "Chloe"));
+        names.map(String::toUpperCase);
+        return names;
     }
 }
