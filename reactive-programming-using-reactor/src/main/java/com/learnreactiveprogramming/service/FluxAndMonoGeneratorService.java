@@ -109,4 +109,29 @@ public class FluxAndMonoGeneratorService {
                 .flatMap(FluxAndMonoGeneratorService::splitStringWithDelay)
                 .log();
     }
+
+
+    //concatMap (preserves the ordering, unlike flatMap)
+    public Flux<String> namesFlux_concatMap(int stringLength) {
+        return Flux.fromIterable(List.of("Alex", "Ben", "Chloe"))
+                .filter(name -> name.length() > stringLength)
+                .map(String::toUpperCase)
+                //We need A,L,E,X,C,H,L,O,E
+                //.flatMap(FluxAndMonoGeneratorService::splitStringWithDelay)
+                .concatMap(FluxAndMonoGeneratorService::splitStringWithDelay)
+                .log();
+    }
+
+    // Key differences:
+    // 1. map applies a one-to-one transformation to each element of the source Flux,
+    //    resulting in a Flux of Fluxes (in this case, Flux<String>).
+    // 2. flatMap, on the other hand, applies a one-to-many transformation. It flattens
+    //    the inner Fluxes and produces a single Flux of the transformed elements.
+    // 3. Use map when you want to transform each element individually and maintain
+    //    a one-to-one relationship between source and transformed elements.
+    // 4. Use flatMap when you want to transform each element into multiple elements,
+    //    and you want to flatten the result into a single Flux.
+    // 5. map is used for sync transformations, flatMap is used for async transformations.
+    // 6. map does not support transformations that return Publisher.
+    //    flatMap supports that.
 }
