@@ -7,6 +7,8 @@ import java.util.List;
 
 public class FluxAndMonoGeneratorService {
 
+    public static final int STRING_LENGTH = 3;
+
     public static void main(String[] args) {
         FluxAndMonoGeneratorService generatorService = new FluxAndMonoGeneratorService();
         //generatorService.namesFlux()
@@ -39,7 +41,7 @@ public class FluxAndMonoGeneratorService {
         });
 
         //flatMap() example
-        generatorService.namesFlux_flatMap(3).subscribe(System.out::print);
+        generatorService.namesFlux_flatMap(STRING_LENGTH).subscribe(System.out::print);
     }
 
 
