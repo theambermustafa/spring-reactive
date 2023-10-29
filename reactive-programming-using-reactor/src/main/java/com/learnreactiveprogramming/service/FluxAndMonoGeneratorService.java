@@ -46,18 +46,18 @@ public class FluxAndMonoGeneratorService {
     }
 
 
-    private static boolean isLengthFine(String str) {
+    private boolean isLengthFine(String str) {
         return str.length() > 5;
     }
 
     //ALEX -> Flux(A,L,E,X)
-    public static Flux<String> splitString(String name) {
+    public Flux<String> splitString(String name) {
         var splittedName = name.split("");
         return Flux.fromArray(splittedName);
     }
 
     //Not working?
-    public static Flux<String> splitStringWithDelay(String name) {
+    public Flux<String> splitStringWithDelay(String name) {
         var splittedName = name.split("");
         return Flux
                 .fromArray(splittedName)
@@ -65,7 +65,7 @@ public class FluxAndMonoGeneratorService {
     }
 
     //ALEX -> Flux(A,L,E,X)
-    public static Mono<List<String>> splitStringMono(String name) {
+    public Mono<List<String>> splitStringMono(String name) {
         String[] charArray = name.split("");
         return Mono.just(List.of(charArray));
     }
@@ -94,7 +94,7 @@ public class FluxAndMonoGeneratorService {
 
     public Flux<String> requiredNames() {
         return Flux.fromIterable(List.of("Amber", "Mustafa", "Hesoyam", "Chloe", "La Martiniere", "Alex"))
-                .filter(FluxAndMonoGeneratorService::isLengthFine)
+                .filter(this::isLengthFine)
                 .log();
     }
 
@@ -103,7 +103,7 @@ public class FluxAndMonoGeneratorService {
                 .filter(name -> name.length() > stringLength)
                 .map(String::toUpperCase)
                 //We need A,L,E,X,C,H,L,O,E
-                .flatMap(FluxAndMonoGeneratorService::splitString);
+                .flatMap(this::splitString);
 //                .log();
     }
 
@@ -112,7 +112,7 @@ public class FluxAndMonoGeneratorService {
                 .filter(name -> name.length() > stringLength)
                 .map(String::toUpperCase)
                 //We need A,L,E,X,C,H,L,O,E
-                .flatMap(FluxAndMonoGeneratorService::splitStringWithDelay)
+                .flatMap(this::splitStringWithDelay)
                 .log();
     }
 
@@ -122,8 +122,8 @@ public class FluxAndMonoGeneratorService {
                 .filter(name -> name.length() > stringLength)
                 .map(String::toUpperCase)
                 //We need A,L,E,X,C,H,L,O,E
-                //.flatMap(FluxAndMonoGeneratorService::splitStringWithDelay)
-                .concatMap(FluxAndMonoGeneratorService::splitStringWithDelay)
+                //.flatMap(this::splitStringWithDelay)
+                .concatMap(this::splitStringWithDelay)
                 .log();
     }
 
@@ -131,7 +131,7 @@ public class FluxAndMonoGeneratorService {
         return Mono.just("alex")
                 .filter(name -> name.length() > stringLength)
                 .map(String::toUpperCase)
-                .flatMap(FluxAndMonoGeneratorService::splitStringMono)
+                .flatMap(this::splitStringMono)
                 .log();
     }
 
