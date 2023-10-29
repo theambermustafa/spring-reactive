@@ -30,4 +30,23 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("ALEX", "CHLOE")
                 .verifyComplete();
     }
+
+    @Test
+    void namesFlux_flatMap() {
+        int stringLength = 3;
+        var namesFlux = service.namesFlux_flatMap(stringLength);
+        StepVerifier.create(namesFlux)
+                .expectNext("A", "L", "E", "X", "C", "H", "L", "O", "E")
+                .verifyComplete();
+    }
+
+    @Test
+    void namesFlux_flatMap_withDelay() {
+        int stringLength = 3;
+        var namesFlux = service.namesFlux_flatMap_async(stringLength);
+        StepVerifier.create(namesFlux)
+//                .expectNext("A", "L", "E", "X", "C", "H", "L", "O", "E")
+                .expectNextCount(9)
+                .verifyComplete();
+    }
 }

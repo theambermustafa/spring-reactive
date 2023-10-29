@@ -3,6 +3,7 @@ package com.learnreactiveprogramming.service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.List;
 
 public class FluxAndMonoGeneratorService {
@@ -41,7 +42,7 @@ public class FluxAndMonoGeneratorService {
         });
 
         //flatMap() example
-        generatorService.namesFlux_flatMap(STRING_LENGTH).subscribe(System.out::print);
+        generatorService.namesFlux_flatMap(STRING_LENGTH).subscribe(System.out::println);
     }
 
 
@@ -53,6 +54,14 @@ public class FluxAndMonoGeneratorService {
     public static Flux<String> splitString(String name) {
         var splittedName = name.split("");
         return Flux.fromArray(splittedName);
+    }
+
+    //Not working?
+    public static Flux<String> splitStringWithDelay(String name) {
+        var splittedName = name.split("");
+        return Flux
+                .fromArray(splittedName)
+                .delayElements(Duration.ofMillis(1000));
     }
 
     public Flux<String> namesFlux() {
@@ -90,5 +99,14 @@ public class FluxAndMonoGeneratorService {
                 //We need A,L,E,X,C,H,L,O,E
                 .flatMap(FluxAndMonoGeneratorService::splitString);
 //                .log();
+    }
+
+    public Flux<String> namesFlux_flatMap_async(int stringLength) {
+        return Flux.fromIterable(List.of("Alex", "Ben", "Chloe"))
+                .filter(name -> name.length() > stringLength)
+                .map(String::toUpperCase)
+                //We need A,L,E,X,C,H,L,O,E
+                .flatMap(FluxAndMonoGeneratorService::splitStringWithDelay)
+                .log();
     }
 }
