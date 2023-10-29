@@ -70,4 +70,22 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext(List.of("A", "L", "E", "X"))
                 .verifyComplete();
     }
+
+    @Test
+    void namesFluxToMono_flatMapMany() {
+        int stringLength = 3;
+        var nameMono = service.namesFluxToMono_flatMapMany(stringLength);
+        StepVerifier.create(nameMono)
+                .expectNext("A", "L", "E", "X")
+                .verifyComplete();
+    }
+
+    @Test
+    void namesFlux_transform() {
+        int stringLength = 3;
+        var nameMono = service.namesFlux_transform(stringLength);
+        StepVerifier.create(nameMono)
+                .expectNext("A", "L", "E", "X", "C", "H", "L", "O", "E")
+                .verifyComplete();
+    }
 }
