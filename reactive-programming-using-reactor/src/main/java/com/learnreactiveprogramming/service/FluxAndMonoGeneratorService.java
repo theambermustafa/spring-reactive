@@ -64,6 +64,12 @@ public class FluxAndMonoGeneratorService {
                 .delayElements(Duration.ofMillis(1000));
     }
 
+    //ALEX -> Flux(A,L,E,X)
+    public static Mono<List<String>> splitStringMono(String name) {
+        String[] charArray = name.split("");
+        return Mono.just(List.of(charArray));
+    }
+
     public Flux<String> namesFlux() {
         return Flux.fromIterable(List.of("Alex", "Ben", "Chloe"))
                 .log(); //comes either from a remote service or db eventually (every element of the list comes as an event)
@@ -110,7 +116,6 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
-
     //concatMap (preserves the ordering, unlike flatMap)
     public Flux<String> namesFlux_concatMap(int stringLength) {
         return Flux.fromIterable(List.of("Alex", "Ben", "Chloe"))
@@ -119,6 +124,14 @@ public class FluxAndMonoGeneratorService {
                 //We need A,L,E,X,C,H,L,O,E
                 //.flatMap(FluxAndMonoGeneratorService::splitStringWithDelay)
                 .concatMap(FluxAndMonoGeneratorService::splitStringWithDelay)
+                .log();
+    }
+
+    public Mono<List<String>> namesMono_flatMap(int stringLength) {
+        return Mono.just("alex")
+                .filter(name -> name.length() > stringLength)
+                .map(String::toUpperCase)
+                .flatMap(FluxAndMonoGeneratorService::splitStringMono)
                 .log();
     }
 
